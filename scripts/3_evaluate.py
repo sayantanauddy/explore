@@ -7,7 +7,7 @@ from omegaconf import DictConfig, OmegaConf
 
 from explore.utils.vis import play_path
 from explore.utils.logger import get_logger
-from explore.env.stable_configs_env import StableConfigsEnv
+from explore.env.stable_configs_env import FingerRampHerEnv
 
 
 @hydra.main(version_base="1.3", config_path="../configs", config_name="eval_policy")

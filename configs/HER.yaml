@@ -1,10 +1,26 @@
-rl_method: "HER"
 verbose: 1
 total_timesteps: 2e7
 output_dir: ${hydra:runtime.output_dir}
 device: "cpu"
-net_arch: [256, 256]
 save_freq: 25e4
+q_mask:
+- 1
+- 1
+- 1
+- 1
+- 1
+- 1
+- 0
+- 0
+- 0
+- 0
+her:
+  net_arch: [256, 256]
+  rl_method: "SAC"
+  n_sampled_goal: 4
+  strategy: "future"
+  batch_size: 32
+  learning_starts: 1000
 env:
   time_scaling: 1.0
   stepsize: 0.04
@@ -17,17 +33,23 @@ env:
   target_config_idx: -1
   goal_conditioning: True
   use_vision: False
-  camera_filter: "balls_mask"
   verbose: 1
   num_envs: 4
-  her_n_sampled_goal: 4
-  her_strategy: "future"
-  sim:
-    tau_sim: 0.001
-    tau_action: 0.1
-    interpolate_actions: True
-    joints_are_same_as_ctrl: true
-    mujoco_xml: "/home/sayantan/repos/tub/proj/explore/configs/fingerRamp.xml"
-    camera: fixed_cam
   trajectory_data_path: "/home/sayantan/Downloads/fingerRamp_full"
   stable_configs_path: "/home/sayantan/repos/tub/proj/explore/configs/fingerRamp_onRamp.h5"
+sim:
+  tau_sim: 0.001
+  tau_action: 0.1
+  interpolate_actions: True
+  joints_are_same_as_ctrl: true
+  mujoco_xml: "/home/sayantan/repos/tub/proj/explore/configs/fingerRamp.xml"
+  camera: fixed_cam
+wandb:
+  project: "stable-config-her"
+  name: ""
+eval:
+  eval_freq: 10000
+  video_interval: 100
+  video_length: 100
+checkpoint:
+  save_freq: 1e4
