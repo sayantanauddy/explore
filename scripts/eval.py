@@ -37,6 +37,9 @@ def main(cfg: DictConfig):
         
         obs, init_info = eval_env.envs[0].reset()
 
+        for k,v in obs.items():
+            print(k, v.shape)
+
         stable_configs = h5py.File(cfg.env.stable_configs_path, 'r')
 
         # Set eval_env to init_state and view
@@ -58,6 +61,7 @@ def main(cfg: DictConfig):
         cumu_return = 0
         while not done:
             action, _ = model.predict(obs, deterministic=True)
+            print(action.shape)
             obs, reward, terminated, truncated, info = eval_env.envs[0].step(action)
             done = terminated or truncated
             cumu_return += reward
